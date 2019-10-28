@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import Cookies from 'js-cookie';
-import styles from './App.scss';
 
 import { IntlProvider } from 'react-intl';
 import messages from '@/lang';
@@ -40,13 +39,13 @@ class App extends React.Component<Props, State> {
     const { lang } = this.state;
 
     return (
-      <div className={styles.app}>
+      <React.Fragment>
         <IntlProvider key="intl" locale={lang} messages={messages[lang]}>
           <AppContext.Provider value={defaultContext}>
             { this.props.children }
           </AppContext.Provider>
         </IntlProvider>
-      </div>
+      </React.Fragment>
     );
   }
 }

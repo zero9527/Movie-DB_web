@@ -7,12 +7,11 @@ import Star from '@/components/star';
 import Loading from '@/components/loading';
 import TopBtn from '@/components/scrollToTop';
 import styles from './home.scss';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { History } from 'history';
 
 interface IProps extends RouteComponentProps {
-  history: History,
-  [prop: string]: any
+  history: History
 }
 
 // 占位初始化数据
@@ -31,7 +30,8 @@ const initialState = {
   movieLine: initMovie,
   movieComing: initMovie,
   movieTop250: initMovie,
-  isTop250FullLoaded: false
+  isTop250FullLoaded: false,
+  scrTop: 0
 };
 
 type IState = typeof initialState;
@@ -47,6 +47,10 @@ class Home extends React.Component<IProps> {
     this._getMovieLine();
     this._getMovieTop250();
 
+    this.props.history.listen(route => {
+      this.onRouteChange(route);
+    })
+
     window.addEventListener('scroll', this._onScroll.bind(this));
   }
 
@@ -54,14 +58,47 @@ class Home extends React.Component<IProps> {
     window.removeEventListener('scroll', this._onScroll.bind(this));
   }
 
+  // 监听路由变化
+  public onRouteChange(route: any) {
+    const { scrTop } = this.state;
+    // 详情页
+    if (route.pathname.includes("/movie-detail/") ) {
+      // 重置滚动条位置
+      this.setScrollTop(0);
+
+    } else {
+      // 首页
+      window.addEventListener('scroll', this._onScroll.bind(this));
+      setTimeout(() => {
+        // 恢复滚动条位置
+        this.setScrollTop(scrTop);
+      }, 0);
+    }
+  }
+
+  // 设置滚动条位置
+  public setScrollTop(top: number) {
+    let doc = document.documentElement || document.body;
+    doc.scrollTop = top;
+  }
+
   public _onScroll() {
     const winHeight = window.innerHeight;
-    const srcHeight = document.documentElement.scrollHeight;
-    const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-    const toBottom = srcHeight - winHeight - scrollTop;
+    const srcollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const toBottom = srcollHeight - winHeight - scrollTop;
 
     if (toBottom <= 100) {
       this._getMovieTop250({ start: this.state.currentPage*10 });
+    }
+    // location.pathname 因为是同一组件，所以有问题，所以用原生js的
+    if (location.hash.includes('/movie-detail/')) {
+      window.removeEventListener('scroll', this._onScroll.bind(this));
+      
+    } else {
+      this.setState({
+        scrTop: scrollTop
+      });
     }
   }
 
@@ -137,7 +174,7 @@ class Home extends React.Component<IProps> {
 
   public toDetail(id: string) {
     if (!id) return;
-    this.props.history.push(`/list/detail/${id}`);
+    this.props.history.push(`/movie-detail/${id}`);
   }
 
   public render() {
@@ -152,30 +189,40 @@ class Home extends React.Component<IProps> {
 
     return (
       <div className={`${styles.home} center-content`}>
-        <section className={styles['movie-block']}>
-          <div className={styles['block-title']}>
-            <span className={`${styles['title-item']} ${movieLineStatus === 0 && styles['title-active']}`}
-              onClick={() => this.movieStatusChange(0)}
-            >院线热映</span>
-            <span className={`${styles['title-item']} ${movieLineStatus === 1 && styles['title-active']}`}
-              onClick={() => this.movieStatusChange(1)}
-            >即将上映</span>
-          </div>
-  
-          {movieLineStatus === 0 ? (
-            <MovieItem movieList={movieLine} toDetail={(id: string) => this.toDetail(id)} />
-          ) : (
-            <MovieItem movieList={movieComing} toDetail={(id: string) => this.toDetail(id)} />
-          )}
-        </section>
-  
-        <MovieTop250 isLoading={isLoading} movieTop250={movieTop250} toDetail={(id: string) => this.toDetail(id)} />
-  
-        {isLoading && <Loading />}
+        <div 
+          style={{ 
+            display: this.props.location.pathname.includes("/movie-detail/") 
+            ? 'none' 
+            : 'block' 
+          }}>
+          <section className={styles['movie-block']}>
+            <div className={styles['block-title']}>
+              <span className={`${styles['title-item']} ${movieLineStatus === 0 && styles['title-active']}`}
+                onClick={() => this.movieStatusChange(0)}
+              >院线热映</span>
+              <span className={`${styles['title-item']} ${movieLineStatus === 1 && styles['title-active']}`}
+                onClick={() => this.movieStatusChange(1)}
+              >即将上映</span>
+            </div>
+    
+            {movieLineStatus === 0 ? (
+              <MovieItem movieList={movieLine} toDetail={(id: string) => this.toDetail(id)} />
+            ) : (
+              <MovieItem movieList={movieComing} toDetail={(id: string) => this.toDetail(id)} />
+            )}
+          </section>
+    
+          <MovieTop250 isLoading={isLoading} movieTop250={movieTop250} toDetail={(id: string) => this.toDetail(id)} />
+    
+          {isLoading && <Loading />}
 
-        <TopBtn />
+          <TopBtn />
 
-        {isTop250FullLoaded && <div className={styles.nomore}>没有更多数据了~</div>}
+          {isTop250FullLoaded && <div className={styles.nomore}>没有更多数据了~</div>}
+        </div>
+        
+        {/* detial */}
+        { this.props.children }
       </div>
     )
   }
@@ -233,4 +280,4 @@ function MovieTop250({
   );
 }
 
-export default Home;
+export default withRouter(Home);
