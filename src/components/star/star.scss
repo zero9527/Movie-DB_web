@@ -1,0 +1,31 @@
+.m-star {
+  position: relative;
+  display: inline-block;
+  .star-wrappwer {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    letter-spacing: 0;
+    .star-score {
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: orange;
+      overflow: hidden;
+    }
+    .score {
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+  }
+  .star-score i,
+  .star-bg i {
+    margin-left: -0.5px;
+  }
+  .star-bg {
+    color: #ddd;
+  }
+  .star-active {
+    color: orange;
+  }
+}
