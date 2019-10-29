@@ -22,6 +22,9 @@ const initMovie: any[] = [
   { title: '', images: { medium: ''}, rating: { average: '' }},
   { title: '', images: { medium: ''}, rating: { average: '' }},
   { title: '', images: { medium: ''}, rating: { average: '' }},
+  { title: '', images: { medium: ''}, rating: { average: '' }},
+  { title: '', images: { medium: ''}, rating: { average: '' }},
+  { title: '', images: { medium: ''}, rating: { average: '' }},
 ];
 const initialState = {
   isLoading: false,
@@ -62,30 +65,28 @@ class Home extends React.Component<IProps> {
   public onRouteChange(route: any) {
     const { scrTop } = this.state;
     // 详情页
-    if (route.pathname.includes("/movie-detail/") ) {
+    if (route.pathname.includes("/movie-detail/")) {
       // 重置滚动条位置
       this.setScrollTop(0);
 
     } else {
       // 首页
       window.addEventListener('scroll', this._onScroll.bind(this));
-      setTimeout(() => {
-        // 恢复滚动条位置
-        this.setScrollTop(scrTop);
-      }, 0);
+      // 恢复滚动条位置
+      this.setScrollTop(scrTop);
     }
   }
 
   // 设置滚动条位置
   public setScrollTop(top: number) {
-    let doc = document.documentElement || document.body;
-    doc.scrollTop = top;
+    document.body.scrollTop = top;
+    document.documentElement.scrollTop = top;
   }
 
   public _onScroll() {
     const winHeight = window.innerHeight;
     const srcollHeight = document.documentElement.scrollHeight;
-    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
     const toBottom = srcollHeight - winHeight - scrollTop;
 
     if (toBottom <= 100) {
@@ -167,6 +168,7 @@ class Home extends React.Component<IProps> {
     });
   }
 
+  // 切换院线热播、即将上映
   public movieStatusChange(status: number) {
     this.setState({ movieLineStatus: status });
     this._getMovieComing();
@@ -188,8 +190,9 @@ class Home extends React.Component<IProps> {
     } = this.state;
 
     return (
-      <div className={`${styles.home} center-content`}>
+      <div className={`${styles.home}`}>
         <div 
+          className='center-content'
           style={{ 
             display: this.props.location.pathname.includes("/movie-detail/") 
             ? 'none' 
@@ -236,7 +239,10 @@ function MovieItem({
     <div>
       {movieList.map((item, index) => (
         <div className={styles['movie-item']} key={index} onClick={() => toDetail(item.id)}>
-          <img className={`${!movieList[0].title && 'loading-shink'}`} src={item.images.medium} alt="loading"/>
+          {!movieList[0].title 
+            ? <div className={`${styles.img} loading-shink`} />
+            : <img className={`${styles.img} ${!movieList[0].title && 'loading-shink'}`} src={item.images.medium} alt="loading"/>
+          }
           <div className={styles['movie-title']}>{ item.title }</div>
           {item.rating.average === '0' 
             ? <span>{ item.rating.average }</span>
@@ -253,7 +259,7 @@ function MovieItem({
 
 function MovieTop250({
   isLoading = false,
-  movieTop250= initMovie,
+  movieTop250 = initMovie,
   toDetail = (id: string) => {}
 } = {}) {
   return (
@@ -266,7 +272,10 @@ function MovieTop250({
             movieTop250.map((item, index) => (
               <div className={styles['movie-item']} key={index} onClick={() => toDetail(item.id)}>
                 <span className={styles.index}>{ index+1 }</span>
-                <img className={`${isLoading && 'loading-shink'}`} src={item.images.medium} alt="loading"/>
+                {isLoading && !movieTop250[0].title
+                  ? <div className={`${styles.img} loading-shink`} />
+                  : <img className={styles.img} src={item.images.medium} alt="loading"/>
+                }
                 <div className={styles['movie-title']}>{ item.title }</div>
                 <div className={styles.score}>
                   <Star score={item.rating.average} readonly={true} />

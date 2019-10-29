@@ -2,6 +2,133 @@
   width: 100%;
   height: 100%;
 }
-.line {
-  padding: 20vh 0;
+:global .desc {
+  color: #ccc;
+  font-size: 12px;
+}
+
+.movie-header {
+  position: relative;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: #fff;
+  background: rgb(127, 111, 91);
+}
+.movie-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .movie-img {
+    flex: 120px 0 0;
+    flex-shrink: 0;
+    height: 160px;
+    position: relative;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    .img {
+      width: 100%;
+    }
+  }
+  .movie-top-content {
+    width: 100%;
+    .movie-title {
+      font-size: 22px;
+    }
+  }
+
+}
+
+.movie-score {
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  background: rgba(0,0,0,0.1);
+
+  .score-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .score {
+    margin-right: 10px;
+    font-size: 36px;
+  }
+}
+
+.block-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #999;
+
+  .desc {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.scroll-x {
+  white-space: nowrap;
+  overflow: auto hidden;
+}
+
+.movie-info {
+  .more {
+    float: right;
+    color: #42bd56;
+  }
+}
+
+.movie-actor {
+  .actor-item {
+    display: inline-block;
+    margin-right: 10px;
+    text-align: center;
+
+    img {
+      width: 96px;
+      height: 128px;
+      border-radius: 4px;
+      background: #eee;
+    }
+  }
+}
+
+.movie-pic-item {
+  display: inline-block;
+  img {
+    width: 160px;
+    height: 120px;
+    margin-right: 6px;
+    border-radius: 4px;
+    background: #eee;
+  }
+}
+
+.comment-item {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  .comment-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    >span {
+      margin-right: 6px;
+    }
+    >img {
+      width: 20px;
+      height: 20px;
+      margin-right: 6px;
+      border-radius: 20px;
+      background: #eee;
+    }
+  }
 }
