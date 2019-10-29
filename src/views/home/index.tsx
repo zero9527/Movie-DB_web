@@ -6,9 +6,11 @@ import { getMovieLine, getMovieComing, getMovieTop250 } from '@/api/movie';
 import Star from '@/components/star';
 import Loading from '@/components/loading';
 import TopBtn from '@/components/scrollToTop';
-import styles from './home.scss';
+import Search from '@/components/search';
+import { getMovieTop250All } from '@/utils';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { History } from 'history';
+import styles from './home.scss';
 
 interface IProps extends RouteComponentProps {
   history: History
@@ -49,6 +51,7 @@ class Home extends React.Component<IProps> {
   public componentDidMount() {
     this._getMovieLine();
     this._getMovieTop250();
+    getMovieTop250All();
 
     this.props.history.listen(route => {
       this.onRouteChange(route);
@@ -92,14 +95,12 @@ class Home extends React.Component<IProps> {
     if (toBottom <= 100) {
       this._getMovieTop250({ start: this.state.currentPage*10 });
     }
-    // location.pathname 因为是同一组件，所以有问题，所以用原生js的
-    if (location.hash.includes('/movie-detail/')) {
-      window.removeEventListener('scroll', this._onScroll.bind(this));
-      
-    } else {
+    if(location.pathname === '/') {
       this.setState({
         scrTop: scrollTop
       });
+    } else {
+      window.removeEventListener('scroll', this._onScroll.bind(this));
     }
   }
 
@@ -179,6 +180,12 @@ class Home extends React.Component<IProps> {
     this.props.history.push(`/movie-detail/${id}`);
   }
 
+  // 搜索输入框回车
+  public onConfirm(val: string) {
+    if (!val) return;
+    this.props.history.push(`/search?input=${val}`);
+  }
+
   public render() {
     const { 
       movieLineStatus, 
@@ -191,9 +198,19 @@ class Home extends React.Component<IProps> {
 
     return (
       <div className={`${styles.home}`}>
+        <div style={{ 
+          display: this.props.location.pathname.includes("/movie-detail/") 
+          ? 'none' 
+          : 'block' 
+        }}>
+          {movieLine[0].title && !isLoading && 
+            <Search onConfirm={(val) => this.onConfirm(val)} />
+          }
+        </div>
         <div 
           className='center-content'
           style={{ 
+            paddingTop: '60px',
             display: this.props.location.pathname.includes("/movie-detail/") 
             ? 'none' 
             : 'block' 

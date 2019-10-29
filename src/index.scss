@@ -52,6 +52,11 @@ body {
   }
 }
 
+:global .desc {
+  font-size: 12px;
+  color: #999;
+}
+
 :global .loading-shink {
   position: relative;
   color: #f1f1f1 !important;
