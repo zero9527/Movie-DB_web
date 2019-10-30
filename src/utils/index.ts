@@ -21,24 +21,24 @@ export function dateFormate({ timeStamp, splitChar='-' }: IDateFormateParams) {
 export const phoneRegx = /^1(3|5|6|7|8)\d{9}$/;
 
 // 获取Top250全部电影，搜索列表用（搜索接口失效了。。。）
-export function getMovieTop250All(callback = (cache: any) => {}) {
+export function getMovieTop250All(callback = (_cache: any) => {}) {
   function getDataList(start: number) {
     return getMovieTop250({
       start,
       count: 100
     });
   }
-
-  return Promise.all([
+  let cache = localStorage.getItem('movieTop250All');
+  if (cache && cache.length > 0) {
+    if (callback) callback(JSON.parse(cache));
+    return;
+  }
+  
+  Promise.all([
     getDataList(0),
     getDataList(100),
     getDataList(200),
   ]).then(([res1, res2, res3]: any) => {
-    let cache = localStorage.getItem('movieTop250All');
-    if (cache && cache.length > 0) {
-      if (callback) callback(cache);
-      return;
-    }
     let movieTop250All = [
       ...res1.subjects,
       ...res2.subjects,
@@ -46,11 +46,14 @@ export function getMovieTop250All(callback = (cache: any) => {}) {
     ];
     localStorage.setItem('movieTop250All', JSON.stringify(movieTop250All));
     if (callback) callback(movieTop250All);
+
+  }).catch((err) => {
+    if (callback) callback(err);
   });
 }
 
 export function getUrlParams() {
-  if (!location.hash.includes('?')) return;
+  if (!location.hash.includes('?')) return {};
 
   let search = location.hash.split('?')[1];
   let res = {};

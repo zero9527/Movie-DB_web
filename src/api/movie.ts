@@ -1,6 +1,7 @@
 import axios from 'axios';
 const request = axios.CancelToken.source();
 
+// 跨域用不了，用jsonp
 export function getMovieLine(params = {}) {
   return axios.get('/v2/movie/in_theaters', {params});
 }

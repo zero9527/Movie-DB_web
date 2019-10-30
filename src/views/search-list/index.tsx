@@ -1,7 +1,7 @@
 import * as React from 'react';
 // import { useSelector, useDispatch } from 'react-redux';
 // import { iRootState, Dispatch } from '@/store-rematch';
-import Search from '@/components/search';
+import HeaderSearch from '@/components/header-search';
 import Star from '@/components/star';
 import Loading from '@/components/loading';
 import TopBtn from '@/components/scrollToTop';
@@ -21,12 +21,12 @@ const initMovie: any[] = [
 const initialState = {
   isLoading: false,
   input: '',
-  movieList: initMovie,
   searchList: initMovie
 };
 
 type IState = typeof initialState;
 
+// 搜索电影，在Top250中匹配（搜索接口挂了。。。）
 class SearchList extends React.Component<IProps> {
   public readonly state: Readonly<IState> = initialState;
   public inputTimer: any;
@@ -45,21 +45,36 @@ class SearchList extends React.Component<IProps> {
     this.searchMovie(decodeURI(res.input));
   }
 
+  // 根据电影名关键字 搜索 电影
   public searchMovie(input = '') {
+    if (this.state.isLoading) return;
+    this.setState({ isLoading: true });
+
     const cache = localStorage.getItem('movieTop250All');
+
     if (cache) {
       let movieTop250All = JSON.parse(cache);
       let searchRes = movieTop250All.filter((item: any) => item.title.includes(input));
       this.setState({
-        isLoading: false,
         searchList: searchRes
+      }, () => {
+        this.setState({ isLoading: false });
       });
 
     } else {
       getMovieTop250All(res => {
+        if (!Array.isArray(res)) {
+          this.setState({ isLoading: false });
+          alert('请求失败，请稍后再试！');
+          return;
+        }
+
+        let searchRes = res.filter((item: any) => item.title.includes(input));
+        
         this.setState({
-          isLoading: false,
-          searchList: res
+          searchList: searchRes
+        }, () => {
+          this.setState({ isLoading: false });
         });
       });
     }
@@ -67,7 +82,7 @@ class SearchList extends React.Component<IProps> {
 
   public toDetail(id: string) {
     if (!id) return;
-    this.props.history.push(`/search/movie-detail/${id}`);
+    this.props.history.push(`/movie-detail/${id}`);
   }
 
   public onChange(val: string) {
@@ -87,7 +102,13 @@ class SearchList extends React.Component<IProps> {
     } = this.state;
 
     return (
-      <div className={styles.search}>
+      <div className={styles.search} 
+        style={{
+          paddingTop: this.props.location.pathname.includes("/movie-detail/") 
+          ? ''
+          : '60px'
+        }}
+      >
         <div 
           className="center-content"
           style={{ 
@@ -96,16 +117,18 @@ class SearchList extends React.Component<IProps> {
             : 'block' 
           }}
         >
-          <Search 
-            value={input}
-            onChange={(val) => this.onChange(val)} 
-            onConfirm={(val) => this.onConfirm(val)} 
-          />
+          {!this.props.location.pathname.includes("/movie-detail/") &&
+            <HeaderSearch 
+              value={input} 
+              onChange={(val) => this.onChange(val)} 
+              onConfirm={(val) => this.onConfirm(val)} 
+            />
+          }
+
+          {isLoading && <Loading />}
 
           <MovieItem movieList={searchList} toDetail={(id: string) => this.toDetail(id)} />
     
-          {isLoading && <Loading />}
-
           <TopBtn />
         </div>
 
@@ -121,10 +144,11 @@ function MovieItem({
 } = {}) {
   return (
     <div>
-      <section className="center-content desc">
+      <section className="desc">
         <div>豆瓣电影搜索Api已挂。。。</div>
         <div>不知道其他Api还能活多久。。。</div>
         <div>目前的搜索结果来自Top250。。。</div>
+        <br />
       </section>
       <div className={`${styles["movie-item"]} desc`}>搜索到 { (movieList[0] && movieList[0].title) ? movieList.length : 0 } 条数据</div>
       {movieList[0] && movieList[0].title && movieList.map((item, index) => (

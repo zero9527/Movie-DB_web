@@ -1,12 +1,11 @@
 import * as React from 'react';
 // import { useSelector, useDispatch } from 'react-redux';
 // import { iRootState, Dispatch } from '@/store-rematch';
-// import { Button } from 'antd';
 import { getMovieLine, getMovieComing, getMovieTop250 } from '@/api/movie';
 import Star from '@/components/star';
 import Loading from '@/components/loading';
 import TopBtn from '@/components/scrollToTop';
-import Search from '@/components/search';
+import HeaderSearch from '@/components/header-search';
 import { getMovieTop250All } from '@/utils';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { History } from 'history';
@@ -46,6 +45,7 @@ class Home extends React.Component<IProps> {
 
   constructor(props: IProps) {
     super(props);
+    this._onScroll = this._onScroll.bind(this);
   }
 
   public componentDidMount() {
@@ -57,26 +57,29 @@ class Home extends React.Component<IProps> {
       this.onRouteChange(route);
     })
 
-    window.addEventListener('scroll', this._onScroll.bind(this));
+    window.addEventListener('scroll', this._onScroll);
   }
 
   public componentWillUnmount() {
-    window.removeEventListener('scroll', this._onScroll.bind(this));
+    // 组件销毁后，不操作数据
+    this.setState = () => {};
+    window.removeEventListener('scroll', this._onScroll);
   }
 
   // 监听路由变化
   public onRouteChange(route: any) {
-    const { scrTop } = this.state;
+    // 首页
+    if (route.pathname === '/') {
+      const { scrTop } = this.state;
+      window.addEventListener('scroll', this._onScroll);
+      // 恢复滚动条位置
+      this.setScrollTop(scrTop);
+    }
     // 详情页
     if (route.pathname.includes("/movie-detail/")) {
       // 重置滚动条位置
       this.setScrollTop(0);
-
-    } else {
-      // 首页
-      window.addEventListener('scroll', this._onScroll.bind(this));
-      // 恢复滚动条位置
-      this.setScrollTop(scrTop);
+      window.removeEventListener('scroll', this._onScroll);
     }
   }
 
@@ -92,15 +95,13 @@ class Home extends React.Component<IProps> {
     const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
     const toBottom = srcollHeight - winHeight - scrollTop;
 
-    if (toBottom <= 100) {
+    if (toBottom <= 200) {
       this._getMovieTop250({ start: this.state.currentPage*10 });
     }
-    if(location.pathname === '/') {
-      this.setState({
-        scrTop: scrollTop
-      });
+    if (this.props.location.pathname === '/') {
+      this.setState({ scrTop: scrollTop });
     } else {
-      window.removeEventListener('scroll', this._onScroll.bind(this));
+      window.removeEventListener('scroll', this._onScroll);
     }
   }
 
@@ -109,14 +110,16 @@ class Home extends React.Component<IProps> {
     
     getMovieLine({
       start: 0,
-      count: 9
+      count: 9,
+      city: '深圳'
     }).then((res: any) => {
       this.setState({
         movieLine: res.subjects
       });
 
-    }).catch(err => {
+    }).catch((err: any) => {
       console.log('err: ', err);
+      alert('数据加载失败，请稍后再试');
     });
   }
 
@@ -148,31 +151,40 @@ class Home extends React.Component<IProps> {
     } = this.state;
     if (isLoading || isTop250FullLoaded) return;
 
-    this.setState({ isLoading: true });
-    
-    getMovieTop250({
-      start,
-      count
-    }).then((res: any) => {
-      this.setState({
-        movieTop250: movieTop250[0].title
-          ? [...movieTop250, ...res.subjects]
-          : res.subjects,
-        isLoading: false,
-        currentPage: currentPage+1,
-        isTop250FullLoaded: res.subjects.length === 0
+    this.setState({ 
+      isLoading: true 
+    }, () => {
+      getMovieTop250({
+        start,
+        count
+      }).then((res: any) => {
+        this.setState({
+          movieTop250: movieTop250[0].title
+            ? [...movieTop250, ...res.subjects]
+            : res.subjects,
+          isLoading: false,
+          currentPage: currentPage+1,
+          isTop250FullLoaded: res.subjects.length === 0
+        });
+  
+      }).catch(err => {
+        console.log('err: ', err);
+        this.setState({ isLoading: false });
       });
-
-    }).catch(err => {
-      console.log('err: ', err);
-      this.setState({ isLoading: false });
     });
   }
 
   // 切换院线热播、即将上映
   public movieStatusChange(status: number) {
     this.setState({ movieLineStatus: status });
-    this._getMovieComing();
+    const { movieLine, movieComing } = this.state;
+    
+    if (status === 0 && !movieLine[0].title) {
+      this._getMovieLine();
+    }
+    if (status === 1 && !movieComing[0].title) {
+      this._getMovieComing();
+    }
   }
 
   public toDetail(id: string) {
@@ -198,19 +210,13 @@ class Home extends React.Component<IProps> {
 
     return (
       <div className={`${styles.home}`}>
-        <div style={{ 
-          display: this.props.location.pathname.includes("/movie-detail/") 
-          ? 'none' 
-          : 'block' 
-        }}>
-          {movieLine[0].title && !isLoading && 
-            <Search onConfirm={(val) => this.onConfirm(val)} />
-          }
-        </div>
+        {!this.props.location.pathname.includes("/movie-detail/") &&
+          <HeaderSearch onConfirm={(val) => this.onConfirm(val)} />
+        }
         <div 
           className='center-content'
           style={{ 
-            paddingTop: '60px',
+            paddingTop: '80px',
             display: this.props.location.pathname.includes("/movie-detail/") 
             ? 'none' 
             : 'block' 
@@ -258,11 +264,11 @@ function MovieItem({
         <div className={styles['movie-item']} key={index} onClick={() => toDetail(item.id)}>
           {!movieList[0].title 
             ? <div className={`${styles.img} loading-shink`} />
-            : <img className={`${styles.img} ${!movieList[0].title && 'loading-shink'}`} src={item.images.medium} alt="loading"/>
+            : <img className={styles.img} src={item.images.medium} alt="loading"/>
           }
           <div className={styles['movie-title']}>{ item.title }</div>
-          {item.rating.average === '0' 
-            ? <span>{ item.rating.average }</span>
+          {item.rating.average === 0 
+            ? <span className="desc">尚未上映</span>
             : <div className={styles.score}>
                 <Star score={item.rating.average} readonly={true} />
                 <span>{ item.rating.average }</span>

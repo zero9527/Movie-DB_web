@@ -10,9 +10,9 @@ export interface Props {
 }
 
 /**
- * 路由跳转 Loading组件
+ * 输入框
  */
-function Loading(props: Props) {
+function Search(props: Props) {
   const [input, setInput] = useState('');
 
   useEffect(() => {
@@ -33,17 +33,29 @@ function Loading(props: Props) {
     if (props.onConfirm) props.onConfirm(input);
   }
 
+  function clear() {
+    setInput('');
+  }
+
   return (
     <div className={styles.search}>
+      <i className={`iconfont icon-search-outline ${styles['search-icon']}`} />
       <input 
+        className={styles.input}
         type="text" 
         placeholder="输入关键字，回车搜索"
         value={input} 
         onChange={onChange} 
         onKeyDown={onKeyDown} 
       />
+      {input !== '' && 
+        <i 
+          className={`iconfont icon-changyongtubiao-mianxing-8 ${styles['clear-icon']}`} 
+          onClick={clear} 
+        />
+      }
     </div>
   );
 }
 
-export default Loading;
+export default Search;

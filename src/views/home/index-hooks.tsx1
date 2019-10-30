@@ -37,13 +37,13 @@ function Home(props: IProps) {
     _getMovieLine();
     _getMovieTop250();
 
-    window.addEventListener('scroll', onScroll.bind(Home));
+    window.addEventListener('scroll', _onScroll);
     return () => {
-      window.removeEventListener('scroll', onScroll.bind(Home));
+      window.removeEventListener('scroll', _onScroll);
     }
   }, []);
 
-  function onScroll() {
+  function _onScroll() {
     const winHeight = window.innerHeight;
     const srcHeight = document.documentElement.scrollHeight;
     const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
