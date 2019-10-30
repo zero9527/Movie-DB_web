@@ -21,7 +21,8 @@ const initMovie: any[] = [
 const initialState = {
   isLoading: false,
   input: '',
-  searchList: initMovie
+  searchList: initMovie,
+  scrTop: 0
 };
 
 type IState = typeof initialState;
@@ -33,6 +34,7 @@ class SearchList extends React.Component<IProps> {
 
   constructor(props: IProps) {
     super(props);
+    this._onScroll = this._onScroll.bind(this);
   }
 
   public componentDidMount() {
@@ -43,6 +45,51 @@ class SearchList extends React.Component<IProps> {
       input: decodeURI(res.input)
     });
     this.searchMovie(decodeURI(res.input));
+    
+    this.props.history.listen(route => {
+      this.onRouteChange(route);
+    })
+
+    window.addEventListener('scroll', this._onScroll);
+  }
+
+  public componentWillUnmount() {
+    // 组件销毁后，不操作数据
+    this.setState = () => {};
+    window.removeEventListener('scroll', this._onScroll);
+  }
+
+  // 监听路由变化
+  public onRouteChange(route: any) {
+    // 首页
+    if (route.pathname === '/search') {
+      const { scrTop } = this.state;
+      window.addEventListener('scroll', this._onScroll);
+      // 恢复滚动条位置
+      this.setScrollTop(scrTop);
+    }
+    // 详情页
+    if (route.pathname.includes("/movie-detail/")) {
+      // 重置滚动条位置
+      this.setScrollTop(0);
+      window.removeEventListener('scroll', this._onScroll);
+    }
+  }
+
+  // 设置滚动条位置
+  public setScrollTop(top: number) {
+    document.body.scrollTop = top;
+    document.documentElement.scrollTop = top;
+  }
+
+  public _onScroll() {
+    const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+
+    if (this.props.location.pathname === '/search') {
+      this.setState({ scrTop: scrollTop });
+    } else {
+      window.removeEventListener('scroll', this._onScroll);
+    }
   }
 
   // 根据电影名关键字 搜索 电影
@@ -82,7 +129,7 @@ class SearchList extends React.Component<IProps> {
 
   public toDetail(id: string) {
     if (!id) return;
-    this.props.history.push(`/movie-detail/${id}`);
+    this.props.history.push(`/search/movie-detail/${id}`);
   }
 
   public onChange(val: string) {
