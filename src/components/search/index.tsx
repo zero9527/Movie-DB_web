@@ -6,7 +6,8 @@ const { useState, useEffect } = React;
 export interface Props {
   value?: string,
   onChange?: (input: string) => void,
-  onConfirm?: (input: string) => void
+  onConfirm?: (input: string) => void,
+  onClear?: () => void
 }
 
 /**
@@ -25,16 +26,21 @@ function Search(props: Props) {
     if (props.onChange) props.onChange(value);
   }
 
+  // 输入
   function onKeyDown(e: any) {
+    // 回车
     if (e.keyCode === 13) onConfirm();
   }
 
+  // 回车
   function onConfirm() {
     if (props.onConfirm) props.onConfirm(input);
   }
 
+  // 清空
   function clear() {
     setInput('');
+    if (props.onClear) props.onClear();
   }
 
   return (

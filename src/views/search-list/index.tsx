@@ -102,11 +102,11 @@ class SearchList extends React.Component<IProps> {
     if (cache) {
       let movieTop250All = JSON.parse(cache);
       let searchRes = movieTop250All.filter((item: any) => item.title.includes(input));
-      this.setState({
-        searchList: searchRes
-      }, () => {
+
+      setTimeout(() => {
         this.setState({ isLoading: false });
-      });
+      }, 300);
+      this.setState({ searchList: searchRes });
 
     } else {
       getMovieTop250All(res => {
@@ -118,10 +118,11 @@ class SearchList extends React.Component<IProps> {
 
         let searchRes = res.filter((item: any) => item.title.includes(input));
         
+        setTimeout(() => {
+          this.setState({ isLoading: false });
+        }, 300);
         this.setState({
           searchList: searchRes
-        }, () => {
-          this.setState({ isLoading: false });
         });
       });
     }
@@ -132,13 +133,17 @@ class SearchList extends React.Component<IProps> {
     this.props.history.push(`/search/movie-detail/${id}`);
   }
 
-  public onChange(val: string) {
+  public onChange(val: string = '') {
     if (this.inputTimer) clearTimeout(this.inputTimer);
-    this.inputTimer = setTimeout(() => this.searchMovie(val), 500);
+    this.inputTimer = setTimeout(() => this.searchMovie(val), 600);
   }
 
   public onConfirm(val: string) {
     this.searchMovie(val);
+  }
+
+  public isDetailPage() {
+    return this.props.location.pathname.includes("/movie-detail/");
   }
 
   public render() {
@@ -149,26 +154,20 @@ class SearchList extends React.Component<IProps> {
     } = this.state;
 
     return (
-      <div className={styles.search} 
-        style={{
-          paddingTop: this.props.location.pathname.includes("/movie-detail/") 
-          ? ''
-          : '60px'
-        }}
+      <div 
+        className={styles.search} 
+        style={{ paddingTop: this.isDetailPage() ? '' : '60px' }} 
       >
         <div 
           className="center-content"
-          style={{ 
-            display: this.props.location.pathname.includes("/movie-detail/") 
-            ? 'none' 
-            : 'block' 
-          }}
+          style={{ display: this.isDetailPage() ? 'none' : 'block' }}
         >
-          {!this.props.location.pathname.includes("/movie-detail/") &&
+          {!this.isDetailPage() &&
             <HeaderSearch 
               value={input} 
               onChange={(val) => this.onChange(val)} 
               onConfirm={(val) => this.onConfirm(val)} 
+              onClear={() => this.searchMovie()}
             />
           }
 

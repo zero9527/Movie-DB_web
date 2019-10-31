@@ -198,6 +198,10 @@ class Home extends React.Component<IProps> {
     this.props.history.push(`/search?input=${val}`);
   }
 
+  public isDetailPage() {
+    return this.props.location.pathname.includes("/movie-detail/");
+  }
+
   public render() {
     const { 
       movieLineStatus, 
@@ -210,14 +214,13 @@ class Home extends React.Component<IProps> {
 
     return (
       <div className={`${styles.home}`}>
-        {!this.props.location.pathname.includes("/movie-detail/") &&
+        {!this.isDetailPage() &&
           <HeaderSearch onConfirm={(val) => this.onConfirm(val)} />
         }
         <div 
-          className='center-content'
+          className={`${styles['home-content']} center-content`}
           style={{ 
-            paddingTop: '80px',
-            display: this.props.location.pathname.includes("/movie-detail/") 
+            display: this.isDetailPage() 
             ? 'none' 
             : 'block' 
           }}>
@@ -261,7 +264,12 @@ function MovieItem({
   return (
     <div>
       {movieList.map((item, index) => (
-        <div className={styles['movie-item']} key={index} onClick={() => toDetail(item.id)}>
+        <div 
+          className={styles['movie-item']} 
+          key={index} 
+          title={item.title}
+          onClick={() => toDetail(item.id)}
+        >
           {!movieList[0].title 
             ? <div className={`${styles.img} loading-shink`} />
             : <img className={styles.img} src={item.images.medium} alt="loading"/>
@@ -291,22 +299,25 @@ function MovieTop250({
           <span className={styles['title-active']}>Top250</span>
         </div>
         <div>
-          {
-            movieTop250.map((item, index) => (
-              <div className={styles['movie-item']} key={index} onClick={() => toDetail(item.id)}>
-                <span className={styles.index}>{ index+1 }</span>
-                {isLoading && !movieTop250[0].title
-                  ? <div className={`${styles.img} loading-shink`} />
-                  : <img className={styles.img} src={item.images.medium} alt="loading"/>
-                }
-                <div className={styles['movie-title']}>{ item.title }</div>
-                <div className={styles.score}>
-                  <Star score={item.rating.average} readonly={true} />
-                  <span>{ item.rating.average }</span>
-                </div>
+          {movieTop250.map((item, index) => (
+            <div 
+              className={styles['movie-item']} 
+              key={index} 
+              title={item.title}
+              onClick={() => toDetail(item.id)}
+            >
+              <span className={styles.index}>{ index+1 }</span>
+              {isLoading && !movieTop250[0].title
+                ? <div className={`${styles.img} loading-shink`} />
+                : <img className={styles.img} src={item.images.medium} alt="loading"/>
+              }
+              <div className={styles['movie-title']}>{ item.title }</div>
+              <div className={styles.score}>
+                <Star score={item.rating.average} readonly={true} />
+                <span>{ item.rating.average }</span>
               </div>
-            ))
-          }
+            </div>
+          ))}
         </div>
       </section>
   );

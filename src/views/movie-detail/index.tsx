@@ -58,6 +58,10 @@ class MovieDetail extends React.Component<IProps> {
     });
   }
 
+  public getDesc60Words(desc: string) {
+    return `${desc.substr(0, 60)}...`;
+  }
+
   public render() {
     const { 
       isLoading, 
@@ -79,9 +83,9 @@ class MovieDetail extends React.Component<IProps> {
               <div className={`${styles['movie-title']} ${isLoading && 'loading-shink'}`}>{ movieInfo.title || '...' }</div>
               <div className={`${isLoading && 'loading-shink'}`}>{ movieInfo.original_title }</div>
               <div className={`desc ${isLoading && 'loading-shink'}`} style={{margin: '6px 0 12px'}}>
-                { movieInfo.countries.toString() } / 
-                { movieInfo.genres.toString() } / 
-                { movieInfo.pubdates.toString() } / 
+                { movieInfo.countries.toString() }&nbsp;/&nbsp;
+                { movieInfo.genres.toString() }&nbsp;/&nbsp;
+                { movieInfo.pubdates.toString() }&nbsp;/
                 片长{ movieInfo.durations[0] }
               </div>
             </div>
@@ -100,7 +104,7 @@ class MovieDetail extends React.Component<IProps> {
   
         <section className={`${styles['movie-info']} center-content`}>
           <div className={styles["block-title"]}>剧情简介</div>
-          <span>{ showDescFull ? movieInfo.summary : movieInfo.summary.substr(0, 60) }</span>
+          <span>{ showDescFull ? movieInfo.summary : this.getDesc60Words(movieInfo.summary) }</span>
           {!isLoading && !showDescFull && (
             <span className={styles.more} onClick={() => this.setState({showDescFull: true})}>展开</span>
           )}
@@ -113,7 +117,7 @@ class MovieDetail extends React.Component<IProps> {
               movieInfo.directors.map((item) => (
                 <div className={styles["actor-item"]} key={item.avatars.medium}>
                   <img src={item.avatars.medium} />
-                  <div>{ item.name }</div>
+                  <div className={styles['actor-name']}>{ item.name }</div>
                   <span className="desc">导演</span>
                 </div>
               ))
@@ -122,7 +126,7 @@ class MovieDetail extends React.Component<IProps> {
               movieInfo.casts.map((item) => (
                 <div className={styles["actor-item"]} key={item.avatars.medium}>
                   <img src={item.avatars.medium} alt="loading" />
-                  <div>{ item.name }</div>
+                  <div className={styles['actor-name']}>{ item.name }</div>
                   <span className="desc">演员</span>
                 </div>
               ))
@@ -154,7 +158,7 @@ class MovieDetail extends React.Component<IProps> {
                     <span>{ item.author.name }</span>
                     <Star score={`${item.rating.value*2}`} readonly={true} />
                   </div>
-                  <div>{ item.summary }</div>
+                  <div className={styles["comment-content"]}>{ item.summary }</div>
                 </div>
               ))
             }

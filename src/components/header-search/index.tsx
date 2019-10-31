@@ -5,7 +5,8 @@ import styles from './header-search.scss';
 export interface Props {
   value?: string,
   onChange?: (input: string) => void,
-  onConfirm?: (input: string) => void
+  onConfirm?: (input: string) => void,
+  onClear?: () => void
 }
 
 /**
@@ -27,6 +28,11 @@ function HeaderSearch(props: Props) {
     if (!val) return;
     if (props.onConfirm) props.onConfirm(val);
   }
+
+  // 清空
+  function onClear() {
+    if (props.onClear) props.onClear();
+  }
   
   return (
     <div className={`${styles['search-wrapper']} center-content`}>
@@ -36,6 +42,7 @@ function HeaderSearch(props: Props) {
         value={props.value}
         onChange={(val) => onChange(val)} 
         onConfirm={(val) => onConfirm(val)} 
+        onClear={onClear}
       />
     </div>
   );

@@ -83,6 +83,7 @@
   .more {
     float: right;
     color: #42bd56;
+    cursor: pointer;
   }
 }
 
@@ -97,6 +98,10 @@
       height: 128px;
       border-radius: 4px;
       background: #eee;
+    }
+    .actor-name {
+      margin: 4px 0;
+      font-size: 12px;
     }
   }
 }
@@ -130,5 +135,8 @@
       border-radius: 20px;
       background: #eee;
     }
+  }
+  .comment-content {
+    word-break: break-word;
   }
 }
