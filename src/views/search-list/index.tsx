@@ -8,6 +8,7 @@ import TopBtn from '@/components/scrollToTop';
 import { History } from 'history';
 import { getMovieTop250All, getUrlParams } from '@/utils';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { Toast } from 'antd-mobile';
 import styles from './search-list.scss';
 
 interface IProps extends RouteComponentProps {
@@ -112,7 +113,7 @@ class SearchList extends React.Component<IProps> {
       getMovieTop250All(res => {
         if (!Array.isArray(res)) {
           this.setState({ isLoading: false });
-          alert('请求失败，请稍后再试！');
+          Toast.fail('请求失败，请稍后再试！');
           return;
         }
 

@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
-import { message } from 'antd';
+import { Toast } from 'antd-mobile';
 import * as Cookies from 'js-cookie';
 
 // axios.defaults.timeout = 10000;
@@ -42,7 +42,7 @@ export default function AxiosConfig() {
   }, (err: AxiosError) => {
     // 服务器错误
     if (err.response && (err.response.status+'').startsWith('5')) {
-      message.error('请求出错！')
+      Toast.fail('请求出错！');
     }
     if (startFlag) {
       startFlag = false;

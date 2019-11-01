@@ -9,6 +9,7 @@ import HeaderSearch from '@/components/header-search';
 import { getMovieTop250All } from '@/utils';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { History } from 'history';
+import { Toast } from 'antd-mobile';
 import styles from './home.scss';
 
 interface IProps extends RouteComponentProps {
@@ -119,7 +120,7 @@ class Home extends React.Component<IProps> {
 
     }).catch((err: any) => {
       console.log('err: ', err);
-      alert('数据加载失败，请稍后再试');
+      Toast.fail('数据加载失败，请稍后再试');
     });
   }
 
@@ -295,31 +296,31 @@ function MovieTop250({
 } = {}) {
   return (
     <section className={styles['movie-block']}>
-        <div className={styles['block-title']}>
-          <span className={styles['title-active']}>Top250</span>
-        </div>
-        <div>
-          {movieTop250.map((item, index) => (
-            <div 
-              className={styles['movie-item']} 
-              key={index} 
-              title={item.title}
-              onClick={() => toDetail(item.id)}
-            >
-              <span className={styles.index}>{ index+1 }</span>
-              {isLoading && !movieTop250[0].title
-                ? <div className={`${styles.img} loading-shink`} />
-                : <img className={styles.img} src={item.images.medium} alt="loading"/>
-              }
-              <div className={styles['movie-title']}>{ item.title }</div>
-              <div className={styles.score}>
-                <Star score={item.rating.average} readonly={true} />
-                <span>{ item.rating.average }</span>
-              </div>
+      <div className={styles['block-title']}>
+        <span className={styles['title-active']}>Top250</span>
+      </div>
+      <div>
+        {movieTop250.map((item, index) => (
+          <div 
+            className={styles['movie-item']} 
+            key={index} 
+            title={item.title}
+            onClick={() => toDetail(item.id)}
+          >
+            <span className={styles.index}>{ index+1 }</span>
+            {isLoading && !movieTop250[0].title
+              ? <div className={`${styles.img} loading-shink`} />
+              : <img className={styles.img} src={item.images.medium} alt="loading"/>
+            }
+            <div className={styles['movie-title']}>{ item.title }</div>
+            <div className={styles.score}>
+              <Star score={item.rating.average} readonly={true} />
+              <span>{ item.rating.average }</span>
             </div>
-          ))}
-        </div>
-      </section>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 

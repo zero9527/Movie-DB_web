@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { getMovieDetail } from '@/api/movie';
 import { RouteComponentProps } from 'react-router';
+import { Toast } from 'antd-mobile';
 import Star from '@/components/star';
 import styles from './movie-detail.scss';
 
@@ -54,7 +55,7 @@ class MovieDetail extends React.Component<IProps> {
 
     }).catch(err => {
       this.setState({ isLoading: false });
-      alert('请求失败，请稍后再试！');
+      Toast.fail('请求失败，请稍后再试！');
     });
   }
 

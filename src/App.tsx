@@ -17,7 +17,7 @@ export type State = Readonly<IState>;
 export interface IAppContext {
   appname: string
 }
-const defaultContext: IAppContext = { appname: 'react-antd-ts' };
+const defaultContext: IAppContext = { appname: 'Movie-DB' };
 export const AppContext = React.createContext(defaultContext);
 
 class App extends React.Component<Props, State> {

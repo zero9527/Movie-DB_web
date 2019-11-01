@@ -23,39 +23,37 @@ function Star({
 
   return (
     <section className={styles["m-star"]}>
-      {
-        readonly ? (
-          <div className={styles["star-wrappwer"]}>
-            {/* 显示评分 */}
-            <div className={styles["star-score"]} style={{width: (Number(score)!/10)*100+'%'}}>
-              <i className="iconfont icon-changyongtubiao-mianxing-11" />
-              <i className="iconfont icon-changyongtubiao-mianxing-11" />
-              <i className="iconfont icon-changyongtubiao-mianxing-11" />
-              <i className="iconfont icon-changyongtubiao-mianxing-11" />
-              <i className="iconfont icon-changyongtubiao-mianxing-11" />
-            </div>
-            <div className={styles["star-bg"]}>
-              <i className="iconfont icon-changyongtubiao-mianxing-11" />
-              <i className="iconfont icon-changyongtubiao-mianxing-11" />
-              <i className="iconfont icon-changyongtubiao-mianxing-11" />
-              <i className="iconfont icon-changyongtubiao-mianxing-11" />
-              <i className="iconfont icon-changyongtubiao-mianxing-11" />
-            </div>
+      {readonly ? (
+        <div className={styles["star-wrappwer"]}>
+          {/* 显示评分 */}
+          <div className={styles["star-score"]} style={{width: (Number(score)!/10)*100+'%'}}>
+            <i className="iconfont icon-changyongtubiao-mianxing-11" />
+            <i className="iconfont icon-changyongtubiao-mianxing-11" />
+            <i className="iconfont icon-changyongtubiao-mianxing-11" />
+            <i className="iconfont icon-changyongtubiao-mianxing-11" />
+            <i className="iconfont icon-changyongtubiao-mianxing-11" />
           </div>
-        ) : (
           <div className={styles["star-bg"]}>
-            {starLen.map(item => (
-              <i 
-                key={item}
-                onClick={() => setScore1(item+1)}
-                className={`iconfont icon-changyongtubiao-mianxing-11 ${
-                  scrore1 >= item+1 ? styles['star-active'] : ''
-                }`}
-              />
-            ))}
+            <i className="iconfont icon-changyongtubiao-mianxing-11" />
+            <i className="iconfont icon-changyongtubiao-mianxing-11" />
+            <i className="iconfont icon-changyongtubiao-mianxing-11" />
+            <i className="iconfont icon-changyongtubiao-mianxing-11" />
+            <i className="iconfont icon-changyongtubiao-mianxing-11" />
           </div>
-        )
-      }
+        </div>
+      ) : (
+        <div className={styles["star-bg"]}>
+          {starLen.map(item => (
+            <i 
+              key={item}
+              onClick={() => setScore1(item+1)}
+              className={`iconfont icon-changyongtubiao-mianxing-11 ${
+                scrore1 >= item+1 ? styles['star-active'] : ''
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
