@@ -21,8 +21,8 @@ ReactDOM.render(
 );
 
 setTimeout(() => {
-  const whiteLoading = document.querySelector('#white-loading');
-  document.body.removeChild(whiteLoading!);
+  const whiteLoading: any = document.querySelector('#white-loading')!;
+  document.body.removeChild(whiteLoading);
 }, 300);
 
 // registerServiceWorker();
