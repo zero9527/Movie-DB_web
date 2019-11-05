@@ -7,6 +7,11 @@ import Router from './router';
 import './index.scss';
 // import registerServiceWorker from './registerServiceWorker'; 
 
+setTimeout(() => {
+  const whiteLoading = document.querySelector('#white-loading');
+  document.body.removeChild(whiteLoading!);
+}, 0);
+
 const Loading = () => (<div>loading...</div>);
 
 AxiosConfig(); // 初始化 axios

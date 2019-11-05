@@ -53,6 +53,39 @@
       You need to enable JavaScript to run this app.
     </noscript>
     <div id="root"></div>
+    <div id="white-loading">
+      <style>
+        #white-loading {
+          width: 100%;
+          position: fixed;
+          top: 100px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          font-size: 22px;
+        }
+        #white-loading .desc {
+          position: relative;
+          margin-top: 10px;
+          color: #999;
+          font-size: 16px;
+        }
+        #white-loading .desc::after {
+          content: '';
+          position: absolute;
+          left: 100%;
+          animation: loading 2s infinite;
+        }
+        @keyframes loading {
+          0%, 33% { content: '.'; }
+          34%, 66% { content: '..'; }
+          67%, 100% { content: '...'; }
+        }
+      </style>
+      <div class="app-name">Movie-DB</div>
+      <span class="desc">loading</span>
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
