@@ -6,8 +6,13 @@ import styles from './scrollToTop.scss';
  */
 function scrollToTop() {
   function toTop() {
-    const doc = document.documentElement || document.body;
-    doc.scrollTop = 0;
+    if (window.scroll) {
+      window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+      
+    } else {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
   }
 
   return (
