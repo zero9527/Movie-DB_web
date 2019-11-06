@@ -3,7 +3,7 @@ import * as React from 'react';
 import Loadable from '@loadable/component';
 
 const Home = Loadable(() => import('@/views/home'));
-const SearchList = Loadable(() => import(/* webpackPrefetch: true */ '@/views/search-list'));
+const SearchList = Loadable(() => import('@/views/search-list'));
 const Detail = Loadable(() => import(/* webpackPrefetch: true */ '@/views/movie-detail'));
 
 // home

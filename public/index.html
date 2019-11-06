@@ -21,6 +21,37 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
+    <style>
+      #white-loading {
+        width: 100%;
+        position: absolute;
+        top: 114px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 22px;
+        color: #42bd56;
+        z-index: -1;
+      }
+      #white-loading .desc {
+        position: relative;
+        margin-top: 10px;
+        color: #999;
+        font-size: 16px;
+      }
+      #white-loading .desc::after {
+        content: '';
+        position: absolute;
+        left: 100%;
+        animation: loading 2s infinite;
+      }
+      @keyframes loading {
+        0%, 33% { content: '.'; }
+        34%, 66% { content: '..'; }
+        67%, 100% { content: '...'; }
+      }
+    </style>
     <title>Movie-DB</title>
     <script>
       (function(win, doc) {
@@ -54,37 +85,6 @@
     </noscript>
     <div id="root"></div>
     <div id="white-loading">
-      <style>
-        #white-loading {
-          width: 100%;
-          position: absolute;
-          top: 114px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          font-size: 22px;
-          color: #42bd56;
-          z-index: -1;
-        }
-        #white-loading .desc {
-          position: relative;
-          margin-top: 10px;
-          color: #999;
-          font-size: 16px;
-        }
-        #white-loading .desc::after {
-          content: '';
-          position: absolute;
-          left: 100%;
-          animation: loading 2s infinite;
-        }
-        @keyframes loading {
-          0%, 33% { content: '.'; }
-          34%, 66% { content: '..'; }
-          67%, 100% { content: '...'; }
-        }
-      </style>
       <div class="app-name">Movie-DB</div>
       <span class="desc">loading</span>
     </div>
