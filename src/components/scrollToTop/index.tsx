@@ -31,9 +31,13 @@ function scrollToTop() {
 
   return (
     <div 
-      className={styles['top-btn']} 
-      onClick={toTop}
+      className={
+        CSS.supports('position', 'sticky') 
+          ? styles['top-btn-sticky'] 
+          : styles['top-btn-fixed']
+      } 
       style={{visibility: showBtn ? 'visible' : 'hidden'}}
+      onClick={toTop}
     >
       <i className="iconfont icon-arrow-upward-outline" />
     </div>
