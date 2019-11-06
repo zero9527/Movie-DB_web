@@ -5,7 +5,7 @@ import store from '@/store-rematch';
 import AxiosConfig from './api';
 import Router from './router';
 import './index.scss';
-// import registerServiceWorker from './registerServiceWorker'; 
+import registerServiceWorker from './registerServiceWorker'; 
 
 const Loading = () => (<div>loading...</div>);
 
@@ -22,7 +22,7 @@ ReactDOM.render(
 
 setTimeout(() => {
   const whiteLoading: any = document.querySelector('#white-loading')!;
-  document.body.removeChild(whiteLoading);
-}, 300);
+  whiteLoading.style.visibility = 'hidden';
+}, 1000);
 
-// registerServiceWorker();
+registerServiceWorker();

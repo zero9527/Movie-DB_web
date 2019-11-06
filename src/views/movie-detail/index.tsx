@@ -31,6 +31,9 @@ class MovieDetail extends React.Component<IProps> {
 
   constructor(props: IProps) {
     super(props);
+
+    const whiteLoading: any = document.querySelector('#white-loading')!;
+    whiteLoading.style.visibility = 'hidden';
   }
 
   public componentDidMount() {
