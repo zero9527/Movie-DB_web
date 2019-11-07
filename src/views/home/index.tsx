@@ -224,11 +224,8 @@ class Home extends React.Component<IProps> {
         }
         <div 
           className={`${styles['home-content']} center-content`}
-          style={{ 
-            display: this.isDetailPage() 
-            ? 'none' 
-            : 'block' 
-          }}>
+          style={{display: this.isDetailPage() ? 'none' : 'block'}}
+        >
           <section className={styles['movie-block']}>
             <div className={styles['block-title']}>
               <span className={`${styles['title-item']} ${movieLineStatus === 0 && styles['title-active']}`}
@@ -246,7 +243,11 @@ class Home extends React.Component<IProps> {
             )}
           </section>
     
-          <MovieTop250 isLoading={isLoading} movieTop250={movieTop250} toDetail={(id: string) => this.toDetail(id)} />
+          <MovieTop250 
+            isLoading={isLoading} 
+            movieTop250={movieTop250} 
+            toDetail={(id: string) => this.toDetail(id)} 
+          />
     
           {isLoading && <Loading />}
 
