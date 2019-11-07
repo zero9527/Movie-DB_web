@@ -33,23 +33,14 @@
         font-size: 22px;
         color: #42bd56;
         z-index: -1;
+        transform: translateZ(0);
+        will-change: auto;
       }
-      #white-loading .desc {
+      #white-loading img {
+        width: 30px;
+        height: 30px;
         position: relative;
         margin-top: 10px;
-        color: #999;
-        font-size: 16px;
-      }
-      #white-loading .desc::after {
-        content: '';
-        position: absolute;
-        left: 100%;
-        animation: loading 2s infinite;
-      }
-      @keyframes loading {
-        0%, 33% { content: '.'; }
-        34%, 66% { content: '..'; }
-        67%, 100% { content: '...'; }
       }
     </style>
     <title>Movie-DB</title>
@@ -86,7 +77,7 @@
     <div id="root"></div>
     <div id="white-loading">
       <div class="app-name">Movie-DB</div>
-      <span class="desc">loading</span>
+      <img src="%PUBLIC_URL%/images/loading.gif" alt="loading">
     </div>
     <!--
       This HTML file is a template.

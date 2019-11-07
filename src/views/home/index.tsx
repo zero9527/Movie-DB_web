@@ -36,7 +36,7 @@ const initialState = {
   movieComing: initMovie,
   movieTop250: initMovie,
   isTop250FullLoaded: false,
-  scrTop: 0
+  scrTop: 0,
 };
 
 type IState = typeof initialState;
@@ -47,6 +47,10 @@ class Home extends React.Component<IProps> {
   constructor(props: IProps) {
     super(props);
     this._onScroll = this._onScroll.bind(this);
+    setTimeout(() => {
+      const whiteLoading: any = document.querySelector('#white-loading')!;
+      whiteLoading.style.visibility = 'hidden';
+    }, 1000);
   }
 
   public componentDidMount() {

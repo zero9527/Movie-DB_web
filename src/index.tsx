@@ -20,9 +20,4 @@ ReactDOM.render(
   document.getElementById('root') as HTMLElement
 );
 
-setTimeout(() => {
-  const whiteLoading: any = document.querySelector('#white-loading')!;
-  whiteLoading.style.visibility = 'hidden';
-}, 1000);
-
 registerServiceWorker();
