@@ -81,9 +81,6 @@ class Home extends React.Component<IProps> {
       // 重置滚动条位置
       this.setScrollTop(0);
       window.removeEventListener('scroll', this._onScroll);
-
-      const whiteLoading: any = document.querySelector('#white-loading')!;
-      whiteLoading.style.visibility = 'visible';
     }
   }
 

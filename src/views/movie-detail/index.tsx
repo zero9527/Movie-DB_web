@@ -31,9 +31,6 @@ class MovieDetail extends React.Component<IProps> {
 
   constructor(props: IProps) {
     super(props);
-
-    const whiteLoading: any = document.querySelector('#white-loading')!;
-    whiteLoading.style.visibility = 'hidden';
   }
 
   public componentDidMount() {
@@ -62,8 +59,8 @@ class MovieDetail extends React.Component<IProps> {
     });
   }
 
-  public getDesc60Words(desc: string) {
-    return `${desc.substr(0, 60)}...`;
+  public getDesc100Words(desc: string) {
+    return `${desc.substr(0, 100)}...`;
   }
 
   public render() {
@@ -108,7 +105,7 @@ class MovieDetail extends React.Component<IProps> {
   
         <section className={`${styles['movie-info']} center-content`}>
           <div className={styles["block-title"]}>剧情简介</div>
-          <span>{ showDescFull ? movieInfo.summary : this.getDesc60Words(movieInfo.summary) }</span>
+          <span>{ showDescFull ? movieInfo.summary : this.getDesc100Words(movieInfo.summary) }</span>
           {!isLoading && !showDescFull && (
             <span className={styles.more} onClick={() => this.setState({showDescFull: true})}>展开</span>
           )}
