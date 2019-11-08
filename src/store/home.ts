@@ -2,7 +2,7 @@ import * as mobx from 'mobx';
 
 // 禁止在 action 外直接修改 state 
 mobx.configure({ enforceActions: "observed"});
-const { observable, action, computed } = mobx;
+const { observable, action, computed, runInAction } = mobx;
 
 class Home {
   @observable
@@ -26,7 +26,9 @@ class Home {
   @action
   public setCountAsync = (_count: number) => {
     setTimeout(() => {
-      this.count = _count;
+      runInAction(() => {
+        this.count = _count;
+      })
     }, 1000);
   }
 }
