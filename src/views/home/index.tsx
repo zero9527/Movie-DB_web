@@ -1,6 +1,4 @@
 import * as React from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
-// import { iRootState, Dispatch } from '@/store-rematch';
 import { getMovieLine, getMovieComing, getMovieTop250 } from '@/api/movie';
 import Star from '@/components/star';
 import Loading from '@/components/loading';
@@ -10,10 +8,13 @@ import { getMovieTop250All } from '@/utils';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { History } from 'history';
 import { Toast } from 'antd-mobile';
+import { observer, inject } from 'mobx-react';
+import { homeStoreType } from '@/store/home';
 import styles from './home.scss';
 
 interface IProps extends RouteComponentProps {
-  history: History
+  history: History,
+  homeStore: homeStoreType
 }
 
 // 占位初始化数据
@@ -41,6 +42,8 @@ const initialState = {
 
 type IState = typeof initialState;
 
+@inject('homeStore')
+@observer
 class Home extends React.Component<IProps> {
   public readonly state: Readonly<IState> = initialState;
 
@@ -58,6 +61,9 @@ class Home extends React.Component<IProps> {
     this._getMovieTop250();
     getMovieTop250All();
 
+    this.props.homeStore.setCount(2);
+    console.log(this.props.homeStore.count); // 2
+    
     this.props.history.listen(route => {
       this.onRouteChange(route);
     })
