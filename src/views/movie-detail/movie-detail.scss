@@ -80,10 +80,32 @@
 }
 
 .movie-info {
+  .content {
+    height: 60px;
+    line-height: 20px;
+    display: inline-block;
+    overflow: hidden;
+  }
   .more {
-    float: right;
+    position: absolute;
+    bottom: 14px;
+    right: 15px;
+    padding: 2px 5px;
     color: #42bd56;
+    background-color: #fff;
     cursor: pointer;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin-left: -60px;
+      width: 60px;
+      height: 20px;
+      display: block;
+      background: linear-gradient(90deg, transparent, #fff);
+    }
   }
 }
 

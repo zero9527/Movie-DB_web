@@ -105,7 +105,9 @@ class MovieDetail extends React.Component<IProps> {
   
         <section className={`${styles['movie-info']} center-content`}>
           <div className={styles["block-title"]}>剧情简介</div>
-          <span>{ showDescFull ? movieInfo.summary : this.getDesc100Words(movieInfo.summary) }</span>
+          <div className={styles.content} style={{ height: showDescFull ? 'auto' : '60px' }}>
+            { movieInfo.summary }
+          </div>
           {!isLoading && !showDescFull && (
             <span className={styles.more} onClick={() => this.setState({showDescFull: true})}>展开</span>
           )}
