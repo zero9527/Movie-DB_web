@@ -51,7 +51,7 @@ class Home extends React.Component<IProps> {
     super(props);
     this._onScroll = this._onScroll.bind(this);
     setTimeout(() => {
-      const whiteLoading: any = document.querySelector('#white-loading')!;
+      const whiteLoading = document.querySelector('#white-loading') as HTMLDivElement;
       whiteLoading.style.visibility = 'hidden';
     }, 1000);
   }
