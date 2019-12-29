@@ -36,8 +36,8 @@ body {
   transform: translate(-50%, -50%);
 }
 
-:global .iconfont{
-  font-family: "iconfont" !important;
+:global .iconfont {
+  font-family: 'iconfont' !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
@@ -45,7 +45,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-@keyframes:global(loading) {
+@keyframes:global (loading) {
   from {
     margin-left: 0;
   }
@@ -61,6 +61,7 @@ body {
 
 :global .loading-shink {
   position: relative;
+  margin-bottom: 6px;
   color: #f1f1f1 !important;
   background: #f1f1f1 !important;
   overflow: hidden;

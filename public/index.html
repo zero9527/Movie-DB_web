@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
-    <meta name="theme-color" content="#20ab36">
-    <meta name="referrer" content="never">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#20ab36" />
+    <meta name="referrer" content="never" />
     <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_1459913_0k6s02lni3v7.css">
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="//at.alicdn.com/t/font_1459913_0k6s02lni3v7.css"
+    />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -47,9 +53,9 @@
     <script>
       (function(win, doc) {
         function resizeFn() {
-          // iw/750 === fontSize/10, 
+          // iw/750 === fontSize/10,
           // 设计稿 750 下 rem 除以 10，也就是设计稿 100px，css 里面 10rem
-          var iw = win.innerWidth*2;
+          var iw = win.innerWidth * 2;
           if (iw <= 850) {
             fontSize = 10 * (iw / 750);
           } else {
@@ -79,7 +85,7 @@
     <div id="root"></div>
     <div id="white-loading">
       <div class="app-name">Movie-DB</div>
-      <img src="%PUBLIC_URL%/images/loading.gif" alt="loading">
+      <img src="%PUBLIC_URL%/images/loading.gif" alt="loading" />
     </div>
     <!--
       This HTML file is a template.

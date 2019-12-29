@@ -4,7 +4,7 @@ const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
@@ -14,7 +14,8 @@ const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -24,7 +25,7 @@ const publicPath = paths.servedPath;
 const shouldUseRelativeAssetPaths = publicPath === './';
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 // const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
-const shouldUseSourceMap = true; //false;
+const shouldUseSourceMap = false;
 // `publicUrl` is just like `publicPath`, but we will provide it to our app
 // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
 // Omit trailing slash as %PUBLIC_URL%/xyz looks better than %PUBLIC_URL%xyz.
@@ -62,27 +63,25 @@ const config = {
     publicPath: publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
     devtoolModuleFilenameTemplate: info =>
-      path
-        .relative(paths.appSrc, info.absoluteResourcePath)
-        .replace(/\\/g, '/'),
+      path.relative(paths.appSrc, info.absoluteResourcePath).replace(/\\/g, '/')
   },
   externals: {
-    'axios': 'axios',
-    'lodash' : {
+    axios: 'axios',
+    lodash: {
       commonjs: 'lodash',
       amd: 'lodash',
       root: '_' // 指向全局变量
     },
-    'react': 'React',
+    react: 'React',
     'react-dom': 'ReactDOM',
     // 'react-router': 'ReactRouter',
-    'mobx': 'mobx',
-    'react-mobx': 'ReactMobx',
+    mobx: 'mobx',
+    'react-mobx': 'ReactMobx'
   },
   optimization: {
     splitChunks: {
       chunks: 'all'
-    },
+    }
     // tree shaking，与 package.json 中 "sideEffects": false 配合使用
     // usedExports: true
   },
@@ -111,13 +110,12 @@ const config = {
       '.js',
       '.json',
       '.web.jsx',
-      '.jsx',
+      '.jsx'
     ],
     alias: {
-      
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-      'react-native': 'react-native-web',
+      'react-native': 'react-native-web'
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -126,8 +124,8 @@ const config = {
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
       new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
-      new TsconfigPathsPlugin({ configFile: paths.appTsProdConfig }),
-    ],
+      new TsconfigPathsPlugin({ configFile: paths.appTsProdConfig })
+    ]
   },
   module: {
     strictExportPresence: true,
@@ -139,7 +137,7 @@ const config = {
         test: /\.(js|jsx|mjs)$/,
         loader: require.resolve('source-map-loader'),
         enforce: 'pre',
-        include: paths.appSrc,
+        include: paths.appSrc
       },
       {
         // "oneOf" will traverse all following loaders until one will
@@ -153,17 +151,16 @@ const config = {
             loader: require.resolve('url-loader'),
             options: {
               limit: 10000,
-              name: 'static/media/[name].[hash:8].[ext]',
-            },
+              name: 'static/media/[name].[hash:8].[ext]'
+            }
           },
           {
             test: /\.(js|jsx|mjs)$/,
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
             options: {
-              
-              compact: true,
-            },
+              compact: true
+            }
           },
           // Compile .tsx?
           {
@@ -173,13 +170,13 @@ const config = {
             exclude: /node_modules/,
             options: {
               babelOptions: {
-                "presets": ["react"],
-                "plugins": [
+                presets: ['react'],
+                plugins: [
                   [
-                    "import", 
-                    { 
-                      "libraryName": "antd-mobile", 
-                      "style": "css" 
+                    'import',
+                    {
+                      libraryName: 'antd-mobile',
+                      style: 'css'
                     }
                   ]
                 ]
@@ -200,18 +197,18 @@ const config = {
                   // you can specify a publicPath here
                   // by default it uses publicPath in webpackOptions.output
                   publicPath: '../',
-                  hmr: process.env.NODE_ENV === 'development',
-                },
+                  hmr: process.env.NODE_ENV === 'development'
+                }
               },
-              'css-loader',
-            ],
+              'css-loader'
+            ]
           },
           {
             test: /\.scss$/,
             exclude: [/node_modules/],
             use: [
               {
-                loader: require.resolve('style-loader'),
+                loader: require.resolve('style-loader')
               },
               {
                 loader: require.resolve('css-loader'),
@@ -234,23 +231,23 @@ const config = {
                         '>1%',
                         'last 4 versions',
                         'Firefox ESR',
-                        'not ie < 9', // React doesn't support IE8 anyway
+                        'not ie < 9' // React doesn't support IE8 anyway
                       ],
-                      flexbox: 'no-2009',
-                    }),
-                  ],
-                },
+                      flexbox: 'no-2009'
+                    })
+                  ]
+                }
               },
               {
-                loader: require.resolve('sass-loader'),
+                loader: require.resolve('sass-loader')
               },
               {
                 loader: 'sass-resources-loader',
                 options: {
                   resources: [
                     // 配置全局 scss 变量
-                    path.resolve(__dirname, './../src/utils/variable.scss'),
-                  ],
+                    path.resolve(__dirname, './../src/utils/variable.scss')
+                  ]
                 }
               }
             ]
@@ -267,14 +264,14 @@ const config = {
             // by webpacks internal loaders.
             exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.json$/],
             options: {
-              name: 'static/media/[name].[hash:8].[ext]',
-            },
-          },
+              name: 'static/media/[name].[hash:8].[ext]'
+            }
+          }
           // ** STOP ** Are you adding a new loader?
           // Make sure to add the new loader(s) before the "file" loader.
-        ],
-      },
-    ],
+        ]
+      }
+    ]
   },
   plugins: [
     // Generates an `index.html` file with the <script> injected.
@@ -291,15 +288,15 @@ const config = {
         keepClosingSlash: true,
         minifyJS: true,
         minifyCSS: true,
-        minifyURLs: true,
+        minifyURLs: true
       },
       templateParameters: {
         isDev: process.env.NODE_ENV === 'development'
       }
     }),
     new MiniCssExtractPlugin({
-      filename: "static/css/[name].[contenthash:8].css",
-      chunkFilename: "static/css/[name].[contenthash:8].css",
+      filename: 'static/css/[name].[contenthash:8].css',
+      chunkFilename: 'static/css/[name].[contenthash:8].css'
     }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
@@ -320,7 +317,7 @@ const config = {
           // ecma 5 compliant code, to avoid issues with older browsers, this is
           // whey we put `ecma: 5` to the compress and output section
           // https://github.com/facebook/create-react-app/pull/4234
-          ecma: 8,
+          ecma: 8
         },
         compress: {
           ecma: 5,
@@ -332,31 +329,31 @@ const config = {
           comparisons: false,
           // Don't inline functions with arguments, to avoid name collisions:
           // https://github.com/mishoo/UglifyJS2/issues/2842
-          inline: 1,
+          inline: 1
         },
         mangle: {
-          safari10: true,
+          safari10: true
         },
         output: {
           ecma: 5,
           comments: false,
           // Turned on because emoji and regex is not minified properly using default
           // https://github.com/facebook/create-react-app/issues/2488
-          ascii_only: true,
-        },
+          ascii_only: true
+        }
       },
       // Use multi-process parallel running to improve the build speed
       // Default number of concurrent runs: os.cpus().length - 1
       parallel: true,
       // Enable file caching
       cache: true,
-      sourceMap: shouldUseSourceMap,
+      sourceMap: shouldUseSourceMap
     }),
     // Generate a manifest file which contains a mapping of all asset filenames
     // to their corresponding output file so that tools can pick it up without
     // having to parse `index.html`.
     new ManifestPlugin({
-      fileName: 'asset-manifest.json',
+      fileName: 'asset-manifest.json'
     }),
     // Generate a service worker script that will precache, and keep up to date,
     // the HTML & assets that are part of the Webpack build.
@@ -386,7 +383,7 @@ const config = {
       // https://github.com/facebookincubator/create-react-app/issues/2237#issuecomment-302693219
       navigateFallbackWhitelist: [/^(?!\/__).*/],
       // Don't precache sourcemaps (they're large) and build asset manifest:
-      staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+      staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/]
     }),
     // Moment.js is an extremely popular library that bundles large locale files
     // by default due to how Webpack interprets its code. This is a practical
@@ -398,7 +395,7 @@ const config = {
     new ForkTsCheckerWebpackPlugin({
       async: false,
       tsconfig: paths.appTsProdConfig,
-      tslint: paths.appTsLint,
+      tslint: paths.appTsLint
     })
   ],
   // Some libraries import Node modules but don't use them in the browser.
@@ -408,8 +405,8 @@ const config = {
     fs: 'empty',
     net: 'empty',
     tls: 'empty',
-    child_process: 'empty',
-  },
+    child_process: 'empty'
+  }
 };
 
 const onBuildReport = Boolean(process.env.npm_config_report);

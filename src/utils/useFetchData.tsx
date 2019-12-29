@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AxiosResponse } from 'axios';
 
-const {useEffect, useState} = React;
+const { useEffect, useState } = React;
 
 type Props = Promise<AxiosResponse<any>>;
 
@@ -22,10 +22,10 @@ const UseFetchData = (fetchFn: Props) => {
       try {
         const res = await fetchFn;
         if (!isDestroyed) {
-          setIsLoading(false);
           setResData(res);
+          setIsLoading(false);
         }
-      } catch(err) {
+      } catch (err) {
         setIsError(true);
       }
     };

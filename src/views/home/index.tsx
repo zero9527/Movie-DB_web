@@ -231,6 +231,9 @@ class Home extends React.Component<IProps> {
 
     return (
       <div className={`${styles.home}`}>
+        {/* detial */}
+        {this.props.children}
+
         {!this.isDetailPage() && (
           <HeaderSearch onConfirm={val => this.onConfirm(val)} />
         )}
@@ -283,9 +286,6 @@ class Home extends React.Component<IProps> {
             <div className={styles.nomore}>没有更多数据了~</div>
           )}
         </div>
-
-        {/* detial */}
-        {this.props.children}
       </div>
     );
   }
